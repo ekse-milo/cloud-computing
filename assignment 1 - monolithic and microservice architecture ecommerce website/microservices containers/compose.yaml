@@ -1,0 +1,77 @@
+networks:
+  microservices_network:
+
+volumes:
+  microservices_volume:
+
+services:
+  mysql-db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: quotes_db
+      MYSQL_USER: quote_user
+      MYSQL_PASSWORD: quote_password
+    ports:
+      - "3306:3306"
+    networks:
+      - microservices_network
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/quotes.csv:/var/lib/mysql-files/quotes.csv
+      - microservices_volume:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -u quote_user --password=quote_password" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  search-service:
+    build:
+      context: ./search-service
+    ports:
+      - "3002:3002"
+    networks:
+      - microservices_network
+    environment:
+      PORT: 3002
+      DB_HOST: mysql-db
+      DB_USER: quote_user
+      DB_PASSWORD: quote_password
+      DB_NAME: quotes_db
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+
+  cart-service:
+    build:
+      context: ./cart-service
+    ports:
+      - "3003:3003"
+    networks:
+      - microservices_network
+    environment:
+      PORT: 3003
+
+  app-service:
+    build:
+      context: ./app-service
+    ports:
+      - "3000:3000"
+    networks:
+      - microservices_network
+    environment:
+      PORT: 3000
+      DB_HOST: mysql-db
+      DB_USER: quote_user
+      DB_PASSWORD: quote_password
+      DB_NAME: quotes_db
+      SEARCH_SERVICE_HOST: search-service
+      SEARCH_SERVICE_PORT: 3002
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      search-service:
+        condition: service_started
+      cart-service:
+        condition: service_started
