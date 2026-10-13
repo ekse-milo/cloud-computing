@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORDS. — Minimalist Quote Store</title>
+    <!-- Google Fonts: Inter for UI, Playfair Display for quotes and editorial typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=1.2">
+</head>
+<body>
+    <div class="site-container">
+        <!-- Header -->
+        <header class="site-header">
+            <div class="logo">
+                <a href="#/">WORDS.</a>
+            </div>
+            <nav class="site-nav">
+                <a href="#/" class="nav-link" id="nav-catalog">Catalog</a>
+                <a href="#/checkout" class="nav-link" id="nav-cart">
+                    Cart <span id="cart-count">(0)</span>
+                </a>
+            </nav>
+        </header>
+
+        <!-- Main Content Area (Dynamic) -->
+        <main id="app" class="main-content">
+            <!-- Views will be dynamically injected here via app.js -->
+            <div class="loader-placeholder">Loading archive...</div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h2>WORDS.</h2>
+                    <p>Curated thoughts, packaged for ownership. A study in typography and conceptual ecommerce.</p>
+                </div>
+                <div class="footer-newsletter">
+                    <h3>Subscribe to the Archive</h3>
+                    <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Joined the newsletter.'); this.reset();">
+                        <input type="email" placeholder="ENTER YOUR EMAIL" required>
+                        <button type="submit">SUBMIT</button>
+                    </form>
+                </div>
+                <div class="footer-meta">
+                    <div class="meta-links">
+                        <a href="#/">Terms of Use</a>
+                        <a href="#/">Licensing Details</a>
+                        <a href="#/">About</a>
+                    </div>
+                    <p class="copyright">&copy; 2026 WORDS. ALL RIGHTS RESERVED.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Services -->
+    <script src="cartService.js?v=1.2"></script>
+    <script src="searchService.js?v=1.2"></script>
+    <!-- Application Script -->
+    <script src="app.js?v=1.2"></script>
+</body>
+</html>
